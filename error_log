@@ -1,0 +1,1 @@
+[03-Jun-2021 13:24:43 UTC] PHP Fatal error:  Interface 'JsonSerializable' not found in /home/viokxaoe/garibook.com/vendor/laravel/framework/src/Illuminate/Support/Enumerable.php on line 11
