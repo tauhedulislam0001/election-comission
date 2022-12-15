@@ -18,65 +18,24 @@ class AdminController extends Controller
     public function authenticate(Request $request)
     {
         $credential = $request->only('email', 'password');
-
         if (Auth::guard('admin')->attempt($credential)) {
             $user = AdminUser::where('email', $request->email)->first();
             $guard = Auth::guard('admin')->login($user);
             $user_type = Auth::guard('admin')->user()->user_type;
-            if ($user_type == 10 or $user_type == 7 or $user_type == 8) {
-                if ($user->can_login == 1) {
-                    $created_by= Auth::guard('admin')->user()->created_by;
-                    $clientIP = request()->ip();
-                    $device= $request->header('User-Agent');
-                     UserLoginLog::insert(['subject' => $user->email, 'ip' => $clientIP, 'status' => '1','sd_id' =>$created_by, 'agent' => $device, 'user_id' => $user->id, 'created_at' => Carbon::now()]);
-                    // return redirect()->intended(route('welcome'));  //intended(route('welcome'))
-                    return response()->json(["success"]);
 
+            if ($user_type == 1 or $user_type == 2 or $user_type == 3) {
+                if ($user->can_login == 1) {
+                    return redirect()->route('admin.dashboard')->with('error', "You have logged in successfully!");
                 } elseif ($user->can_login == 2) {
                     $this->guard()->logout();
-                    return response()->json(["ErrorId"=>'1',"ErrorName"=>"Sorry, your account has been banned! Please contact with your administrator"]);
-
-                    // return redirect()->route('welcome')->with('error', "Sorry, your account has been banned! Please contact with your administrator");
-                } elseif ($user->can_login == 0) {
-                    if ($user_type == 7 or $user_type == 8) {
-                        if (Auth::guard('admin')->user()->passport_no == null) {
-                            $created_by= Auth::guard('admin')->user()->created_by;
-                            $clientIP = request()->ip();
-                            $device= $request->header('User-Agent');
-                             UserLoginLog::insert(['subject' => $user->email, 'ip' => $clientIP, 'status' => '1','sd_id' =>$created_by, 'agent' => $device, 'user_id' => $user->id, 'created_at' => Carbon::now()]);
-                             return response()->json(["ErrorId"=>'3',"ErrorName"=>"success"]);
-                            }
-                    }
-                    $this->guard()->logout();
-                    return response()->json(["ErrorId"=>'1',"ErrorName"=>"You don't have permission to login! Please contact with your administrator"]);
-
-                    // return redirect()->route('welcome')->with('error', "You don't have permission to login! Please contact with your administrator");
-                }
-            }
-
-            if ($user_type !== 10 or $user_type !== 7 or $user_type !== 8) {
-                if ($user->can_login == 1) {
-                  
-                    $created_by= Auth::guard('admin')->user()->created_by;
-                    $clientIP = request()->ip();
-                    $device= $request->header('User-Agent');
-                     UserLoginLog::insert(['subject' => $user->email, 'ip' => $clientIP, 'status' => '1','sd_id' =>$created_by, 'agent' => $device, 'user_id' => $user->id, 'created_at' => Carbon::now()]);
-                    // return redirect()->route('admin.dashboard');
-                    return response()->json(["success"]);
-
-                } elseif ($user->can_login == 2) {
-                    $this->guard()->logout();
-                    return response()->json(["ErrorId"=>'1',"ErrorName"=>"Sorry, your account has been banned! Please contact with your administrator"]);
-                    // return redirect()->route('welcome')->with('error', "Sorry, your account has been banned! Please contact with your administrator");
+                    return redirect()->route('adminuser.login')->with('error', "Sorry, your account has been banned! Please contact with your administrator");
                 } else {
                     $this->guard()->logout();
-                    return response()->json(["ErrorId"=>'1',"ErrorName"=>"You don't have permission to login! Please contact with your administrator"]);
-                    // return redirect()->route('welcome')->with('error', "You don't have permission to login! Please contact with your administrator");
+                    return redirect()->route('adminuser.login')->with('error', "You don't have permission to login! Please contact with your administrator");
                 }
             }
         } else {
-            return response()->json(["ErrorId"=>'1',"ErrorName"=>"Your credential does not match our records"]);
-            // return redirect()->route('welcome')->with('error', 'Your credential does not match our records');
+            return redirect()->route('adminuser.login')->with('error', 'Your credential does not match our records');
         }
     }
 

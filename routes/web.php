@@ -28,7 +28,7 @@ Route::get('/visit-site', [FrontendController::class, 'visitSite'])->name('visit
 
 //=================== Frontend Controller Bangla ===================
 
-Route::post('/user-login', [AdminController::class, 'authenticate'])->name('user.login');
+Route::post('/user-login', [AdminController::class, 'authenticate'])->name('adminuser.login');
 
 //=================== admin middleware ===================
 

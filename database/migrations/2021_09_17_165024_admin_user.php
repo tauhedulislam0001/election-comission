@@ -16,7 +16,7 @@ class AdminUser extends Migration
         Schema::create('admin_users', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('role_id')->nullable();
-            $table->tinyInteger('user_type')->comment('1 = Super-Admin, 2 = Admin, 3 = User, 4 = Super-SD, 5 = SD-Admin, 6 = SD-User, 7 = Agent-Type-A, 8 = Agent-Type-B, 9 = Customer');
+            $table->tinyInteger('user_type')->comment('1 = Super-Admin, 2 = Admin, 3 = User');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('username', 50)->unique();
@@ -27,19 +27,12 @@ class AdminUser extends Migration
             $table->string('designation')->nullable();
             $table->string('mobile')->nullable();
             $table->string('gender')->nullable();
-            $table->string('company_name')->nullable();
-            $table->string('com_reg_no')->nullable();
             $table->string('address')->nullable();
             $table->string('location')->nullable();
             $table->string('dd')->nullable();
             $table->string('mm')->nullable();
             $table->string('yy')->nullable();
-            $table->string('doc')->nullable();
-            $table->string('passport_no')->nullable();
-            $table->string('country')->nullable();
             $table->string('nationality')->nullable();
-            $table->double('wallet_balance')->default(0.00);
-            $table->string('agent_code')->nullable();
             $table->tinyInteger('status')->default(0)->comment('0 = Inactive, 1 = Active');
             $table->tinyInteger('can_login')->default(0)->comment('0 = Can not login, 1 = Can login, 2 = Banned');
             $table->rememberToken();

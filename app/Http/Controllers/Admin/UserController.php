@@ -71,7 +71,6 @@ class UserController extends Controller
         $adminUser->email = $request->email;
         $adminUser->mobile = $request->mobile;
         $adminUser->password = Hash::make($request->password);
-        $adminUser->created_by = $this->user->id;
         $adminUser->user_type = 2;
         $adminUser->can_login = $request->can_login;
         $adminUser->status = 1;
@@ -119,7 +118,6 @@ class UserController extends Controller
         $adminUser->username = $username;
         $adminUser->email = $request->email;
         $adminUser->mobile = $request->mobile;
-        $adminUser->created_by = $this->user->id;
         $adminUser->user_type = 2;
         $adminUser->can_login = $request->can_login;
         $adminUser->role_id = $request->role_id;

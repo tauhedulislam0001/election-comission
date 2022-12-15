@@ -171,7 +171,7 @@ label {
 
                 <div class="col-lg-12 login-form">
                     <div class="col-lg-12 login-form">
-                        <form method="post" action="{{ route('user.login') }}">
+                        <form method="Post" action="{{ route('adminuser.login') }}">
                             @csrf
                             <div class="form-group">
                                 <label class="form-control-label">Email</label>
