@@ -23,11 +23,11 @@ class Message extends Model
 
     public function senderUser()
     {
-        return $this->belongsTo(AdminUser::class, 'sender');
+        return $this->belongsTo(AdminUser::class, 'sender_id');
     }
 
     public function reciverUser()
     {
-        return $this->belongsTo(AdminUser::class, 'receiver');
+        return $this->belongsTo(AdminUser::class, 'receiver_id');
     }
 }

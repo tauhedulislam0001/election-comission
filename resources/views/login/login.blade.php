@@ -171,14 +171,15 @@ label {
 
                 <div class="col-lg-12 login-form">
                     <div class="col-lg-12 login-form">
-                        <form method="post" action="{{ route('adminuser.login') }}">
+                        <form method="post" action="{{ route('user.login') }}">
+                            @csrf
                             <div class="form-group">
                                 <label class="form-control-label">Email</label>
-                                <input type="text" name="email" class="form-control">
+                                <input type="text" name="email" class="form-control" value="{{ old('email') }}">
                             </div>
                             <div class="form-group">
                                 <label class="form-control-label">PASSWORD</label>
-                                <input type="password" name="password" class="form-control" i>
+                                <input type="password" name="password" class="form-control"  value="{{ old('email') }}"i>
                             </div>
 
                             <div class="col-lg-12 loginbttm">

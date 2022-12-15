@@ -10,26 +10,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
     use AuthenticatesUsers;
 
-    public function login() {
-        return view('login.login');
-    }
-
     public function authenticate(Request $request)
     {
-         dd($request->all());
         $credential = $request->only('email', 'password');
 
         if (Auth::guard('admin')->attempt($credential)) {
             $user = AdminUser::where('email', $request->email)->first();
             $guard = Auth::guard('admin')->login($user);
             $user_type = Auth::guard('admin')->user()->user_type;
-
             if ($user_type == 10 or $user_type == 7 or $user_type == 8) {
                 if ($user->can_login == 1) {
                     $created_by= Auth::guard('admin')->user()->created_by;
@@ -102,8 +95,5 @@ class AdminController extends Controller
     protected function guard()
     {
         return Auth::guard('admin');
-    }
-    public function AgentInfo(){
-        return view('agent.agent_info');
     }
 }

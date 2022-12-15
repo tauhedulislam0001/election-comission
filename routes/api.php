@@ -29,8 +29,6 @@ Route::group(['middleware' => 'api','prefix' => 'v1/auth'], function ($router) {
     Route::post('refresh', [AuthController::class,'refresh']);
     Route::post('checkToken', [AuthController::class,'checkToken']);
     Route::get('me', [AuthController::class,'me']);
-    Route::post('Agent/register', [AgentRegisterController::class, 'store']);
-
 });
 
 Route::group(['prefix' => 'v1/'], function ($router) {

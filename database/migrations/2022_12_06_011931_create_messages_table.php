@@ -18,7 +18,7 @@ class CreateMessagesTable extends Migration
             $table->unsignedBigInteger('sender_id');
             $table->unsignedBigInteger('receiver_id');
             $table->unsignedBigInteger('author')->nullable();
-            $table->text('message_id');
+            $table->text('message');
             $table->text('reply')->nullable();
             $table->text('comments')->nullable();
             $table->string('image_one')->nullable();
@@ -28,8 +28,8 @@ class CreateMessagesTable extends Migration
             $table->integer('status')->comment('1 = active, 0 = inactive');
             $table->timestamps();
 
-            $table->foreign('sender')->references('id')->on('admin_users')->onDelete('cascade');
-            $table->foreign('receiver')->references('id')->on('admin_users')->onDelete('cascade');
+            $table->foreign('sender_id')->references('id')->on('admin_users')->onDelete('cascade');
+            $table->foreign('receiver_id')->references('id')->on('admin_users')->onDelete('cascade');
         });
     }
 
