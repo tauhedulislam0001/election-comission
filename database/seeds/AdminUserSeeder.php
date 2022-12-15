@@ -12,12 +12,12 @@ class AdminUserSeeder extends Seeder
      */
     public function run()
     {
-        $superAdmin = AdminUser::where('email', 'systemadmin@garibook.com')->first();
+        $superAdmin = AdminUser::where('email', 'systemadmin@gmail.com')->first();
         if (is_null($superAdmin)) {
             $adminUser = new AdminUser();
             $adminUser->username = "System Admin";
-            $adminUser->email = "systemadmin@garibook.com";
-            $adminUser->password = Hash::make('12345678');
+            $adminUser->email = "systemadmin@gmail.com";
+            $adminUser->password = Hash::make('123456');
             $adminUser->user_type = 1;
             $adminUser->can_login = 1;
             $adminUser->role_id = 1;
