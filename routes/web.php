@@ -102,7 +102,7 @@ Route::group(['middleware' => 'admin.auth'], function () {
     Route::post('message/store', [MessageController::class, 'store'])->name('message.store');
     Route::get('message/view/{id}', [MessageController::class, 'view'])->name('message.view');
     Route::post('message/update/{id}', [MessageController::class, 'update'])->name('message.update');
-    Route::get('message/delete/{id}', [MessageController::class, 'destory'])->name('message.destroy');
+    Route::get('message/delete/{id}', [MessageController::class, 'destroy'])->name('message.destroy');
     Route::get('message/disable/{id}', [MessageController::class, 'inActive'])->name('message.inactive');
     Route::get('message/enable/{id}', [MessageController::class, 'active'])->name('message.active');
     

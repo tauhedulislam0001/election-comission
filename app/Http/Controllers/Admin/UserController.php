@@ -37,7 +37,7 @@ class UserController extends Controller
             toast(Session('error'), 'error');
         }
 
-        $adminUsers = AdminUser::latest()->get();
+        $adminUsers = AdminUser::whereIn('user_type', [2,3])->latest()->get();
         return view('admin.adminUsers.user.index', compact('adminUsers'));
     }
 
@@ -71,7 +71,7 @@ class UserController extends Controller
         $adminUser->email = $request->email;
         $adminUser->mobile = $request->mobile;
         $adminUser->password = Hash::make($request->password);
-        $adminUser->user_type = 2;
+        $adminUser->user_type = 3;
         $adminUser->can_login = $request->can_login;
         $adminUser->status = 1;
         $adminUser->role_id = $request->role_id;
@@ -118,7 +118,7 @@ class UserController extends Controller
         $adminUser->username = $username;
         $adminUser->email = $request->email;
         $adminUser->mobile = $request->mobile;
-        $adminUser->user_type = 2;
+        $adminUser->user_type = 3;
         $adminUser->can_login = $request->can_login;
         $adminUser->role_id = $request->role_id;
         $adminUser->roles()->detach();

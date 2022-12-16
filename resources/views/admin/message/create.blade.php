@@ -20,32 +20,6 @@ Message Create
         @csrf
         <div class="box-body">
             <div class="row">
-                <div class="col-md-1 col-12">
-                    <div class="box-header">
-                        <b>
-                            <h4 class="box-title text-info" style="margin: -20px;">Send To</h4>
-                        </b>
-                    </div>
-                </div>
-                <div class="col-md-11 col-sm-6 col-611col-xl-11 col-lg-11">
-                    <div class="area-wrap" style="margin: 12px 0 0 -35px">
-                        <select class="form-control select2" name="receiver" id="receiver" style="width: 100%;" required>
-                            <option value="">Select User</option>
-                            @foreach ($users as $row)
-                            <option value="{{ $row->id }}">{{ $row->username }}</option>
-                            @endforeach
-                        </select>
-                        <div class="error-message text-danger">
-                            @if ($errors->has('receiver'))
-                            <span class="alert alert-danger">
-                                <strong>{{ $errors->first('receiver') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-md-12 col-12">
                     <div class="box-header">
                         <b>

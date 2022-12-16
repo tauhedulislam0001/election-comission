@@ -1,0 +1,11 @@
+{"createURL":"https://checkout.pay.bka.sh/v1.2.0-beta/checkout/payment/create",
+"executeURL":"https://checkout.pay.bka.sh/v1.2.0-beta/checkout/payment/execute/",
+"queryURL":"https://checkout.pay.bka.sh/v1.2.0-beta/checkout/payment/query/",
+"tokenURL":"https://checkout.pay.bka.sh/v1.2.0-beta/checkout/token/grant",
+"token":"eyJraWQiOiI4aEo0YWZHMHRPQ2huSzBCT1FhTWZ4RUhEWmJRMU8wTGo0NStjUnZzRWJJPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJjNWIxYWNlMS03YjYyLTRlMGItODdkNy04NTMxYjk4NGQ2YjgiLCJhdWQiOiI3cWE1bDdtbzU5NHZnMmN2bHJzOWhkczZiNCIsImV2ZW50X2lkIjoiYjQyOTU0NmQtODQ0NC00MjQ4LWJjN2ItMzk4N2Y0MGJiMjY0IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2NjIwMTY4MDMsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1zb3V0aGVhc3QtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aGVhc3QtMV9xcUZqUTFTQloiLCJjb2duaXRvOnVzZXJuYW1lIjoiMDE4MTAxOTg5NjAiLCJleHAiOjE2NjIwMjA0MDMsImlhdCI6MTY2MjAxNjgwM30.VvjQRZuDVT_rGKP85bVQFOmA_hAr2lXMOeG4NnepBD3cr6eRgKnPVTmHAZxphS10DR9WP7w2BEP4a0ocDpt5L6wsHwoA2lfkri0zuz79WlgTH4eoaupowru0GK2vFp7IXAmXU4HDc0kZpV5GzuUbju6M104pc4pv72AnUhnF76qY6KUQnmP4ZD7gg7qh8qnFqIvvSam7bK46Q-Qejd3g67DQ_Z1cOW6X5sCw6KMV9ZH2m-Ujp7DwUytl3FlyX5YPvSMxw2XEJHLeeXcsqApNIC_NxzJ4vrYDOKrPcyM26VQhDLqD_0KI3h-6SSKbk7bgevLKba_of3DeOrOQib6kZQ",
+"script":"https://scripts.pay.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout.js",
+"app_key":"Ml6nV2fcEAxsiPr5EMMR2QLCch",
+"proxy":"",
+"app_secret":"Jl8W6aM1g2BGxv0zpBuLKQWFgjGYKpYBEVdatP4rFMJ7uIXnQerC",
+"username":"01810198960",
+"password":"M9Q64eAIB]T"}

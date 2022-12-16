@@ -13,10 +13,14 @@ use Intervention\Image\Facades\Image;
 
 class MessageController extends Controller
 {
+    public $user;
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::guard('admin')->user();
+            return $next($request);
+        });
     }
 
     public function index()
@@ -28,13 +32,17 @@ class MessageController extends Controller
         if (session()->has('error')) {
             toast(Session('error'), 'error');
         }
+        
+        if (is_null($this->user) || !$this->user->can('message.view')) {
+            abort(403, 'You are Unauthorized to access this page!');
+        }
 
         $user = Auth::guard('admin')->user();
 
         if($user->user_type == 1 or $user->user_type == 2) {
             $message = Message::latest()->get();
         } elseif($user->user_type == 3) {
-            $message = Message::where('sender', $user->id)->latest()->get();
+            $message = Message::where('status', 1)->latest()->get();
         }
 
         return view('admin.message.index', compact('message'));
@@ -42,14 +50,21 @@ class MessageController extends Controller
 
     public function create()
     {
+        if (is_null($this->user) || !$this->user->can('message.create')) {
+            abort(403, 'You are Unauthorized to access this page!');
+        }
+
         $users = AdminUser::latest()->get();
         return view('admin.message.create', compact('users'));
     }
 
     public function store(Request $request)
     {
+        if (is_null($this->user) || !$this->user->can('message.store')) {
+            abort(403, 'You are Unauthorized to access this page!');
+        }
+
         $request->validate([
-            'receiver'    => 'required',
             'message'     => 'required',
             'image_one'   => 'mimes:jpeg,png,jpg,gif',
             'image_two'   => 'mimes:jpeg,png,jpg,gif',
@@ -78,8 +93,7 @@ class MessageController extends Controller
         }
 
         $message             = new Message();
-        $message->sender     = Auth::guard('admin')->user()->id;
-        $message->receiver   = $request->receiver;
+        $message->sender_id  = Auth::guard('admin')->user()->id;
         $message->message    = $request->message;
         $message->flag       = 0;
         $message->status     = 1;
@@ -101,19 +115,33 @@ class MessageController extends Controller
         if ($message->save()) {
             return redirect()->route('message.index')->with('success', 'Message has been sent successfully!');
         } else {
-            return redirect()->back()->with('error', 'Unable to send message!');
+            return redirect()->back()->with('error', 'Unable to send message! Please contact to your administrator');
         }
     }
 
     public function view($id)
     {
+        if (is_null($this->user) || !$this->user->can('message.edit')) {
+            abort(403, 'You are Unauthorized to access this page!');
+        }
+
+        if (session()->has('success')) {
+            toast(Session('success'), 'success');
+        }
+
+        if (session()->has('error')) {
+            toast(Session('error'), 'error');
+        }
+
         $id = Crypt::decryptString($id);
         $item = Message::findOrFail($id);
         $users = AdminUser::latest()->get();
 
-        if($item->flag == 0) {
-            $item->flag = 1;
-            $item->save();
+        if(Auth::guard('admin')->user()->id != $item->sender_id) {
+            if($item->flag == 0) {
+                $item->flag = 1;
+                $item->save();
+            }
         }
 
         return view('admin.message.edit', compact('item', 'users'));
@@ -121,169 +149,125 @@ class MessageController extends Controller
 
     public function update(Request $request, $id)
     {
-        $id                 = Crypt::decryptString($id);
-        $message            = Message::findOrFail($id);
-        $message->sender    = Auth::guard('admin')->user()->id;
-        $message->receiver  = $request->receiver;
-        $message->message   = $request->message;
-        $message->comments  = $request->comments;
-        dd($request->all());
-        
-    }
+        if (is_null($this->user) || !$this->user->can('message.update')) {
+            abort(403, 'You are Unauthorized to access this page!');
+        }
 
-    public function postUpdateImage(Request $request)
-    {
         $request->validate([
-            'image_one'   => "required",
+            'image_one'   => 'mimes:jpeg,png,jpg,gif',
+            'image_two'   => 'mimes:jpeg,png,jpg,gif',
+            'image_three' => 'mimes:jpeg,png,jpg,gif'
         ]);
 
-        $product_id = $request->id;
-        $old_one    = $request->img_one;
-        $old_two    = $request->img_two;
-        $old_three  = $request->img_three;
-        $old_four   = $request->img_four;
-        $old_five   = $request->img_five;
+        $id      = Crypt::decryptString($id);
+        $message = Message::findOrFail($id);
 
-        if ($request->has('image_one')) {
+        $oldImageOne    = $message->image_one;
+        $oldImageTwo    = $message->image_two;
+        $oldImageThree  = $message->image_three;
 
-            if (file_exists($old_one)) {
-                unlink($old_one);
+        if($request->image_one) {
+            if (file_exists($oldImageOne)) {
+                unlink($oldImageOne);
             }
-
             $image_one  = $request->file('image_one');
             $name_gen   = hexdec(uniqid()) . '.' . $image_one->getClientOriginalExtension();
-            Image::make($image_one)->resize(600, 600)->save('dashboard/admin/message' . $name_gen);
-            $img_url    = 'dashboard/admin/message' . $name_gen;
+            Image::make($image_one)->resize(600, 600)->save('dashboard/admin/message/' .Auth::guard('admin')->user()->id.'message'. $name_gen);
+            $img_url    = 'dashboard/admin/message/' .Auth::guard('admin')->user()->id.'message'. $name_gen;
 
-            $productImageUpdate             = Message::findOrFail($product_id);
-            $productImageUpdate->image_one  = $img_url;
-            $productImageUpdate->updated_at = Carbon::now();
-            $productImageUpdate->save();
-        } else {
-            print 'image one nai <br>';
+            $message->image_one  = $img_url;
+            $message->save();
         }
 
-        if ($request->has('image_two')) {
-            if (file_exists($old_two)) {
-                unlink($old_two);
+        if($request->image_two) {
+            if (file_exists($oldImageTwo)) {
+                unlink($oldImageTwo);
             }
-
             $image_two  = $request->file('image_two');
             $name_gen   = hexdec(uniqid()) . '.' . $image_two->getClientOriginalExtension();
-            Image::make($image_two)->resize(600, 600)->save('dashboard/admin/message' . $name_gen);
-            $img_url2   = 'dashboard/admin/message' . $name_gen;
+            Image::make($image_two)->resize(600, 600)->save('dashboard/admin/message/' .Auth::guard('admin')->user()->id.'message'. $name_gen);
+            $img_url2   = 'dashboard/admin/message/' .Auth::guard('admin')->user()->id.'message'. $name_gen;
 
-            $productImageUpdate             = Message::findOrFail($product_id);
-            $productImageUpdate->image_two  = $img_url2;
-            $productImageUpdate->updated_at = Carbon::now();
-            $productImageUpdate->save();
-        } else {
-            print 'image two nai <br>';
+            $message->image_two  = $img_url2;
+            $message->save();
         }
 
-        if ($request->has('image_three')) {
-            if (file_exists($old_three)) {
-                unlink($old_three);
+        if($request->image_three) {
+            if (file_exists($oldImageThree)) {
+                unlink($oldImageThree);
             }
             $image_three    = $request->file('image_three');
             $name_gen       = hexdec(uniqid()) . '.' . $image_three->getClientOriginalExtension();
-            Image::make($image_three)->resize(600, 600)->save('dashboard/admin/message' . $name_gen);
-            $img_url3       = 'dashboard/admin/message' . $name_gen;
+            Image::make($image_three)->resize(600, 600)->save('dashboard/admin/message/' .Auth::guard('admin')->user()->id.'message'. $name_gen);
+            $img_url3       = 'dashboard/admin/message/' .Auth::guard('admin')->user()->id.'message'. $name_gen;
 
-            $productImageUpdate                 = Message::findOrFail($product_id);
-            $productImageUpdate->image_three    = $img_url3;
-            $productImageUpdate->updated_at     = Carbon::now();
-            $productImageUpdate->save();
-        } else {
-            print 'image three nai <br>';
+            $message->image_three  = $img_url3;
+            $message->save();
         }
 
-        if ($request->has('image_four')) {
-            if (file_exists($old_four)) {
-                unlink($old_four);
-            }
-            $image_four    = $request->file('image_four');
-            $name_gen      = hexdec(uniqid()) . '.' . $image_four->getClientOriginalExtension();
-            Image::make($image_four)->resize(600, 600)->save('dashboard/admin/message' . $name_gen);
-            $img_url4      = 'dashboard/admin/message' . $name_gen;
-
-            $productImageUpdate                = Message::findOrFail($product_id);
-            $productImageUpdate->image_four    = $img_url4;
-            $productImageUpdate->updated_at    = Carbon::now();
-            $productImageUpdate->save();
+        $message->sender_id = Auth::guard('admin')->user()->id;
+        $message->reply_id  = Auth::guard('admin')->user()->id;
+        $message->message   = $request->message;
+        $message->reply     = $request->reply;
+        
+        if($message->save()) {
+            return redirect()->route('message.index')->with('success', "Message replied successfully!");
         } else {
-            print 'image four nai <br>';
+            return redirect()->route('message.index')->with('error', "Unable to reply!");
         }
-
-        if ($request->has('image_five')) {
-            if (file_exists($old_five)) {
-                unlink($old_five);
-            }
-            $image_five    = $request->file('image_five');
-            $name_gen      = hexdec(uniqid()) . '.' . $image_five->getClientOriginalExtension();
-            Image::make($image_five)->resize(600, 600)->save('dashboard/admin/message' . $name_gen);
-            $img_url5      = 'dashboard/admin/message' . $name_gen;
-
-            $productImageUpdate                = Message::findOrFail($product_id);
-            $productImageUpdate->image_five    = $img_url5;
-            $productImageUpdate->updated_at    = Carbon::now();
-            $productImageUpdate->save();
-        } else {
-            print 'image five nai <br>';
-        }
-
-        return redirect()->route('message.index')->with('success', 'Product image has been updated successfully!');
     }
 
     public function destroy($id)
     {
-        $image      = Message::findOrFail($id);
+        if (is_null($this->user) || !$this->user->can('message.delete')) {
+            abort(403, 'You are Unauthorized to access this page!');
+        }
+
+        $msgID      = Crypt::decryptString($id);
+        $image      = Message::findOrFail($msgID);
         $img_one    = $image->image_one;
         $img_two    = $image->image_two;
         $img_three  = $image->image_three;
-        $img_four  = $image->image_four;
-        $img_five  = $image->image_five;
 
-        if (file_exists($img_one && $img_two && $img_three && $img_four && $img_five)) {
+        if (file_exists($img_one && $img_two && $img_three)) {
             unlink($img_one);
             unlink($img_two);
             unlink($img_three);
-            unlink($img_four);
-            unlink($img_five);
         } else {
+            $msgID   = Crypt::decryptString($id);
+            $message = Message::findOrFail($msgID);
 
-            $product = Message::findOrFail($id);
-
-            if ($product->delete()) {
-                return redirect()->route('message.index')->with('success', 'Product image updated successfully!');
+            if ($message->delete()) {
+                return redirect()->route('message.index')->with('success', 'Message deleted successfully!');
             } else {
-                return redirect()->route('message.index')->with('error', 'Failed to update product image!');
+                return redirect()->route('message.index')->with('error', 'Failed to delete message!');
             }
         }
-    }
-
-    //status inactive
-
-    public function destory($id)
-    {
-        $id = Crypt::decryptString($id);
-        Message::findOrFail($id)->delete();
-        return redirect()->route('message.index')->with('success', 'Message has been deleted successfully!!');
     }
 
     //status inactive
 
     public function inActive($id)
     {
-        Message::find($id)->update(['status' => 0]);
-        return redirect()->route('message.index')->with('success', 'Product has been inactivated successfully!');
+        if (is_null($this->user) || !$this->user->can('message.status')) {
+            abort(403, 'You are Unauthorized to access this page!');
+        }
+
+        $msgID = Crypt::decryptString($id);
+        Message::findOrFail($msgID)->update(['status' => 0]);
+        return redirect()->route('message.index')->with('success', 'Message has been inactivated successfully!');
     }
 
     //status inactive
 
     public function active($id)
     {
-        Message::find($id)->update(['status' => 1]);
-        return redirect()->route('message.index')->with('success', 'Product has been activated successfully!');
+        if (is_null($this->user) || !$this->user->can('message.status')) {
+            abort(403, 'You are Unauthorized to access this page!');
+        }
+
+        $msgID = Crypt::decryptString($id);
+        Message::findOrFail($msgID)->update(['status' => 1]);
+        return redirect()->route('message.index')->with('success', 'Message has been activated successfully!');
     }
 }

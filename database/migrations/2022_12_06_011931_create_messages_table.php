@@ -16,11 +16,9 @@ class CreateMessagesTable extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sender_id');
-            $table->unsignedBigInteger('receiver_id');
-            $table->unsignedBigInteger('author')->nullable();
             $table->text('message');
+            $table->unsignedBigInteger('reply_id')->nullable();
             $table->text('reply')->nullable();
-            $table->text('comments')->nullable();
             $table->string('image_one')->nullable();
             $table->string('image_two')->nullable();
             $table->string('image_three')->nullable();
@@ -29,7 +27,7 @@ class CreateMessagesTable extends Migration
             $table->timestamps();
 
             $table->foreign('sender_id')->references('id')->on('admin_users')->onDelete('cascade');
-            $table->foreign('receiver_id')->references('id')->on('admin_users')->onDelete('cascade');
+            $table->foreign('reply_id')->references('id')->on('admin_users')->onDelete('cascade');
         });
     }
 

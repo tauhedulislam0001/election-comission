@@ -58,11 +58,11 @@ All User
                                     @endforeach
                                 </td>
                                 <td>
-                                    @if ($row->user_type == 1)
+                                    @if ($row->user_type == 2)
                                     <div class="px-25 py-10 w-100">
                                         <span class="badge badge-success">Admin</span>
                                     </div>
-                                    @elseif ($row->user_type == 2)
+                                    @elseif ($row->user_type == 3)
                                     <div class="px-25 py-10 w-100">
                                         <span class="badge badge-primary">User</span>
                                     </div>

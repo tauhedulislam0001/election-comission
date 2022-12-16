@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class Message extends Model
 {
     protected $table = "messages";
-    protected $fillabel = ["sender", "receiver", "message", "reply", "image_one", "image_two", "image_three", "comments", "updated_by", "flag", "status"];
+    protected $fillable = ["sender_id", "reply_id", "message", "reply", "image_one", "image_two", "image_three", "comments", "updated_by", "flag", "status"];
 
     protected function newMessage() {
         $user = Auth::guard('admin')->user();
@@ -24,10 +24,5 @@ class Message extends Model
     public function senderUser()
     {
         return $this->belongsTo(AdminUser::class, 'sender_id');
-    }
-
-    public function reciverUser()
-    {
-        return $this->belongsTo(AdminUser::class, 'receiver_id');
     }
 }

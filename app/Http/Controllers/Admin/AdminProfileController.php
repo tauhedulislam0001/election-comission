@@ -29,6 +29,10 @@ class AdminProfileController extends Controller
 
     public function getIndex()
     {
+        if (is_null($this->user) || !$this->user->can('round_trip_booking_list.view')) {
+            abort(403, 'You are Unauthorized to access this page!');
+        }
+
         if (session()->has('success')) {
             toast(Session('success'), 'success');
         }

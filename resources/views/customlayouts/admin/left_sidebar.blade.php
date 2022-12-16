@@ -114,7 +114,7 @@ $user = Auth::guard('admin')->user();
 
                     {{-- Visit Site --}}
 
-                    @if ($user->can('visit_site.view'))
+                    @if ($user->can('message.view') || $user->can('message.create') || $user->can('message.store') || $user->can('message.edit') || $user->can('message.update') || $user->can('message.delete') || $user->can('message.status'))
                     <li class="@yield('message')">
                         <a href="{{ route('message.index') }}" class="garibook-home" style="margin-top: 8px">
                             <i class="glyphicon glyphicon-comment"></i>
