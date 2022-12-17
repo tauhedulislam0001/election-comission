@@ -11,7 +11,7 @@ class Message extends Model
     protected $table = "messages";
     protected $fillable = ["sender_id", "reply_id", "subject", "message", "reply", "image_one", "image_two", "image_three", "comments", "updated_by", "flag", "status"];
 
-    protected function newMessage() {
+    protected function todayMessage() {
         $user = Auth::guard('admin')->user();
 
         if($user->user_type == 1 or $user->user_type == 2) {

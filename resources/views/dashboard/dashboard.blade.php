@@ -43,7 +43,7 @@ develop Dashboard
                         <a href="{{ route('message.index') }}">
                             <div class="wrap-content-dashboard">
                                 <h2 class="my-0 font-weight-700">{{ App\Message::totalMessage() }}</h2>
-                                <span class="text-fade">Total Messager</span>
+                                <span class="text-fade">Total Message</span>
                             </div>
                         </a>
                     </div>
@@ -64,8 +64,8 @@ develop Dashboard
                     <div class="col-xxxl-7 col-md-7 col-sm-7 col-lg-7 col-7">
                         <a href="{{ route('message.index') }}">
                             <div class="wrap-content-dashboard">
-                                <h2 class="my-0 font-weight-700">{{ App\Message::newMessage() }}</h2>
-                                <span class="text-fade">New Messager</span>
+                                <h2 class="my-0 font-weight-700">{{ App\Message::todayMessage() }}</h2>
+                                <span class="text-fade">Today Message</span>
                             </div>
                         </a>
                     </div>

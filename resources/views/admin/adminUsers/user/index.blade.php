@@ -29,7 +29,7 @@ All User
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="table-responsive">
-                    <table id="example"
+                    <table id="tickets"
                         class="table table-bordered table-hover display nowrap margin-top-10 w-p100 text-center">
                         <thead>
                             <tr>

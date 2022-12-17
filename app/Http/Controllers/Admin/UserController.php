@@ -46,8 +46,15 @@ class UserController extends Controller
         if (is_null($this->user) || !$this->user->can('user.create')) {
             abort(403, 'You are Unauthorized to create user!');
         }
+
+        $user_type = Auth::guard('admin')->user()->user_type;
         
-        $roles = Role::get();
+        if($user_type == 1) {
+            $roles = Role::get();
+        } elseif($user_type == 2) {
+            $roles = Role::whereIn('id',[2,3])->get();
+        }
+
         return view('admin.adminUsers.user.create', compact('roles'));
     }
 
@@ -96,7 +103,14 @@ class UserController extends Controller
         $data = $user->roles()->pluck('name');
         $selectedRoles = $data[0] ?? '';
 
-        $roles = Role::get();
+        $user_type = Auth::guard('admin')->user()->user_type;
+
+        if($user_type == 1) {
+            $roles = Role::get();
+        } elseif($user_type == 2) {
+            $roles = Role::whereIn('id',[2,3])->get();
+        }
+
         return view('admin.adminUsers.user.edit', compact('user', 'roles', 'selectedRoles'));
     }
 
