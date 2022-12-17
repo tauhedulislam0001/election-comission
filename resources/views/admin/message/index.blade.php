@@ -49,7 +49,7 @@ Message List
                             <tr>
                                 <td>{{ $loop->index + 1 }}</td>
                                 <td>{{ $row->senderUser->username }}</td>
-                                <td>{{ Str::limit($row->subject, 50) }}</td>
+                                <td>{{ Str::limit($row->subject, 35) }}</td>
                                 <td>
                                     @if ($row->image_one != null or $row->image_two != null or $row->image_three != null)
                                         <span class="badge badge-success">Yes</span>

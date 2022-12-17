@@ -17,7 +17,7 @@ class Message extends Model
         if($user->user_type == 1 or $user->user_type == 2) {
             return self::whereDate('created_at', Carbon::today())->count();
         } elseif($user->user_type == 3) {
-            return self::whereDate('status', 1)->where('created_at', Carbon::today())->count();
+            return self::where('status', 1)->whereDate('created_at', Carbon::today())->count();
         }
     }
 
