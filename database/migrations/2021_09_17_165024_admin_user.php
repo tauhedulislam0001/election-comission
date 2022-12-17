@@ -28,7 +28,6 @@ class AdminUser extends Migration
             $table->string('mobile')->nullable();
             $table->string('gender')->nullable();
             $table->string('address')->nullable();
-            $table->string('location')->nullable();
             $table->string('dd')->nullable();
             $table->string('mm')->nullable();
             $table->string('yy')->nullable();

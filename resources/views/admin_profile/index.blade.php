@@ -127,23 +127,11 @@ My Profile
                                     &nbsp;{{ Auth::user()->yy }}</b>
                                 
                             </span></p>
-                            <p>Country: <span class="text-gray pl-10"><b>{{ Auth::user()->country }}</b></span>
                             <p>Nationality:
                                 <span class="text-gray pl-10"><b>{{ Auth::user()->nationality }}</b></span>
                             </p>
                             <p>Gender: <span class="text-gray pl-10"><b>{{ Auth::user()->gender }}</b></span></p>
-                            <p>Company Name: <span class="text-gray pl-10"><b>{{ Auth::user()->company_name
-                                        }}</b></span>
                             </p>
-                            @if(Auth::guard('admin')->user()->user_type == 4)
-                            <p>Refer_code: <span class="text-gray pl-10"><b>{{ Auth::guard('admin')->user()->agent_code
-                                        }}</b></span></p>
-                            @elseif(Auth::guard('admin')->user()->user_type == 5 or
-                            Auth::guard('admin')->user()->user_type == 6)
-                            <p>user_code: <span class="text-gray pl-10"><b>{{ Auth::guard('admin')->user()->agent_code
-                                        }}</b></span></p>
-
-                            @endif
                         </div>
                     </div>
                     <div class="tab-pane" id="profile2" role="tabpanel">
@@ -151,7 +139,6 @@ My Profile
                             <p>Email :<span class="text-gray pl-10"><b>{{ Auth::user()->email }}</b></span>
                             </p>
                             <p>Phone :<span class="text-gray pl-10"><b>{{ Auth::user()->mobile }}</b></span></p>
-                            <p>Location: <span class="text-gray pl-10"><b>{{ Auth::user()->location }}</b></span>
                             <p>Address :<span class="text-gray pl-10">
                                     <b>{{ Auth::user()->address }}</b>
                                 </span>
@@ -221,18 +208,6 @@ My Profile
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-form-label col-md-2">Company Name
-                                                <span class="text-primary"><b>*</b></span>
-                                            </label>
-                                            <div class="col-md-10">
-                                                <input class="form-control" value="{{ Auth::user()->company_name }}"
-                                                    type="text" name="company_name">
-                                                @error('company_name')
-                                                <span class="text-primary">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
                                             <label class="col-form-label col-md-2">Designation
                                                 <span class="text-primary"><b>*</b></span>
                                             </label>
@@ -247,48 +222,36 @@ My Profile
                                         <div class="form-group row">
                                             <label class="col-form-label col-md-2">Date Of Birth
                                                 <span class="text-primary"><b>*</b></span>
-                                            </label>
-                                            {{-- <div class="col-md-10">
-                                                <input class="form-control" type="date" value="{{ Auth::user()->DOB }}"
-                                                    name="DOB">
-                                                @error('DOB')
-                                                <span class="text-primary">{{ $message }}</span>
-                                                @enderror
-                                            </div> --}}
-                                         
-                                                <div class="col-md-10">
-                                                    <div class="col-md-4 float-left p-1">
-                                                        <select name="dd" id="" class="form-control form-control select2 select2-hidden-accessible" style="width: 100%;" id="dd">
-                                                            <option value="">DD</option>
-                                                            @for ($i = 1; $i <= 31; $i++) <option value="{{ $i }}" @if(isset(Auth::user()->dd) && Auth::user()->dd==$i)
-                                                                selected @endif>{{ $i }}</option>
-                                                                @endfor
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-4 float-left p-1">
-                                                        <select name="mm" id="mm" class="form-control form-control select2 select2-hidden-accessible" style="width: 100%;" >
-                                                            <option value="">MM</option>
-                                                            @for ($i = 1; $i <= 12; $i++) <option value="{{ $i }}" @if(isset(Auth::user()->mm) && Auth::user()->mm==$i)
-                                                                selected @endif>{{ $i }}</option>
-                                                                @endfor
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-4 float-left p-1">
-                                                        <select name="yy" id="yy" class="form-control form-control select2 select2-hidden-accessible" style="width: 100%;">
-                                                            <option value="">YYYY</option>
-                                                            {{ $last= date('Y')-120 }}
-                                                            {{ $now = date('Y') }}
-                                                            @for ($i = $now; $i >= $last; $i--)
-                                                            <option value="{{ $i }}" @if(isset(Auth::user()->yy) && Auth::user()->yy==$i) selected @endif>{{ $i }}
-                                                            </option>
+                                            </label>                                         
+                                            <div class="col-md-10">
+                                                <div class="col-md-4 float-left p-1">
+                                                    <select name="dd" id="" class="form-control form-control select2 select2-hidden-accessible" style="width: 100%;" id="dd">
+                                                        <option value="">DD</option>
+                                                        @for ($i = 1; $i <= 31; $i++) <option value="{{ $i }}" @if(isset(Auth::user()->dd) && Auth::user()->dd==$i)
+                                                            selected @endif>{{ $i }}</option>
                                                             @endfor
-                                                        </select>
-                                                    </div>
+                                                    </select>
                                                 </div>
-                                                      
-                                                        
-                                                  
-                                          
+                                                <div class="col-md-4 float-left p-1">
+                                                    <select name="mm" id="mm" class="form-control form-control select2 select2-hidden-accessible" style="width: 100%;" >
+                                                        <option value="">MM</option>
+                                                        @for ($i = 1; $i <= 12; $i++) <option value="{{ $i }}" @if(isset(Auth::user()->mm) && Auth::user()->mm==$i)
+                                                            selected @endif>{{ $i }}</option>
+                                                            @endfor
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 float-left p-1">
+                                                    <select name="yy" id="yy" class="form-control form-control select2 select2-hidden-accessible" style="width: 100%;">
+                                                        <option value="">YYYY</option>
+                                                        {{ $last= date('Y')-120 }}
+                                                        {{ $now = date('Y') }}
+                                                        @for ($i = $now; $i >= $last; $i--)
+                                                        <option value="{{ $i }}" @if(isset(Auth::user()->yy) && Auth::user()->yy==$i) selected @endif>{{ $i }}
+                                                        </option>
+                                                        @endfor
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-form-label col-md-2">Nationality
@@ -298,18 +261,6 @@ My Profile
                                                 <input class="form-control" value="{{ Auth::user()->nationality }}"
                                                     type="text" name="nationality">
                                                 @error('nationality')
-                                                <span class="text-primary">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-md-2">Country
-                                                <span class="text-primary"><b>*</b></span>
-                                            </label>
-                                            <div class="col-md-10">
-                                                <input class="form-control" value="{{ Auth::user()->country }}"
-                                                    type="text" name="country">
-                                                @error('country')
                                                 <span class="text-primary">{{ $message }}</span>
                                                 @enderror
                                             </div>
@@ -380,18 +331,6 @@ My Profile
                                             <textarea rows="5" class="form-control" name="address"
                                                 placeholder="Enter your address here">{{ Auth::user()->address }}</textarea>
                                             @error('address')
-                                            <span class="text-primary">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-md-2">Location
-                                            <span class="text-primary"><b>*</b></span>
-                                        </label>
-                                        <div class="col-md-10">
-                                            <textarea rows="5" class="form-control" name="location"
-                                                placeholder="Enter your location here">{{ Auth::user()->location }}</textarea>
-                                            @error('location')
                                             <span class="text-primary">{{ $message }}</span>
                                             @enderror
                                         </div>

@@ -44,7 +44,6 @@ class AdminUser extends Authenticatable implements JWTSubject
         'designation',
         'gender',
         'address',
-        'location',
         'dd',
         'mm',
         'yy',

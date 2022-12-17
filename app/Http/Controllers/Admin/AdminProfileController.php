@@ -29,10 +29,6 @@ class AdminProfileController extends Controller
 
     public function getIndex()
     {
-        if (is_null($this->user) || !$this->user->can('round_trip_booking_list.view')) {
-            abort(403, 'You are Unauthorized to access this page!');
-        }
-
         if (session()->has('success')) {
             toast(Session('success'), 'success');
         }
@@ -50,6 +46,7 @@ class AdminProfileController extends Controller
         if (session()->has('error')) {
             toast(Session('error'), 'error');
         }
+
         return view('admin_profile.change_password');
     }
 
@@ -86,12 +83,9 @@ class AdminProfileController extends Controller
         $updateProfile->yy = $request->yy;
         $updateProfile->gender = $request->gender;
         $updateProfile->nationality = $request->nationality;
-        $updateProfile->country = $request->country;
-        $updateProfile->company_name = $request->company_name;
         $updateProfile->mobile = $request->mobile;
         $updateProfile->address = $request->address;
-        $updateProfile->location = $request->location;
-        // dd($request->all());
+
         if ($updateProfile->save()) {
             return redirect()->route('admin.profile')->with('success', 'Admin profile has been updated successfully');
         } else {
