@@ -23,6 +23,20 @@ Message Create
                 <div class="col-md-12 col-12">
                     <div class="box-header">
                         <b>
+                            <h4 class="box-title text-info" style="margin: -20px;">Subject</h4>
+                        </b>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-xl-12">
+                    <textarea name="subject" class="form-control" id="message" cols="200" rows="1" required></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-12">
+                    <div class="box-header">
+                        <b>
                             <h4 class="box-title text-info" style="margin: -20px;">Message Details</h4>
                         </b>
                     </div>

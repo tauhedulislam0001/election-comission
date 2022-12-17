@@ -28,17 +28,16 @@ Message List
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="table-responsive">
-                    <table id="example"
+                    <table id="tickets"
                         class="table table-bordered table-hover display nowrap margin-top-10 w-p100 text-center">
                         <thead>
                             <tr>
                                 <th>Sl</th>
                                 <th>User</th>
-                                <th>Message</th>
-                                <th>Image One</th>
-                                <th>Image Two</th>
-                                <th>Image Three</th>
-                                <th>Message Status</th>
+                                <th>Subject</th>
+                                <th>Attachment Status</th>
+                                <th>Sent At</th>
+                                <th>Seen AT</th>
                                 @if (Auth::Guard('admin')->user()->user_type == 1 or Auth::Guard('admin')->user()->user_type == 2)
                                 <th>Status</th>
                                 @endif
@@ -50,29 +49,22 @@ Message List
                             <tr>
                                 <td>{{ $loop->index + 1 }}</td>
                                 <td>{{ $row->senderUser->username }}</td>
-                                <td>{{ Str::limit($row->message, 50) }}</td>
+                                <td>{{ Str::limit($row->subject, 50) }}</td>
                                 <td>
-                                    @if ($row->image_one != null)
-                                        <img src="{{ asset($row->image_one) }}" width="60px" height="60px" alt="">
+                                    @if ($row->image_one != null or $row->image_two != null or $row->image_three != null)
+                                        <span class="badge badge-success">Yes</span>
+                                    @else
+                                        <span class="badge badge-primary">No</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($row->image_two != null)
-                                        <img src="{{ asset($row->image_two) }}" width="60px" height="60px" alt="">
-                                    @endif
+                                    <b>{{ $row->created_at->diffForHumans() }}</b>
                                 </td>
                                 <td>
-                                    @if ($row->image_three != null)
-                                        <img src="{{ asset($row->image_three) }}" width="60px" height="60px" alt="">
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($row->flag == 0)
-                                    <b>message sent <br> {{ $row->created_at->diffForHumans() }}</b>
-                                    @elseif($row->flag == 1)
-                                    <b>message seen <br> {{ $row->updated_at->diffForHumans() }}</b>
-                                    @elseif($row->flag == 2)
-                                    <b>message replied <br> {{ $row->updated_at->diffForHumans() }}</b>
+                                    @if($row->flag == 1)
+                                    <b>{{ $row->updated_at->diffForHumans() }}</b>
+                                    @else
+                                    <b>not seen</b>
                                     @endif
                                 </td>
                                 @if (Auth::Guard('admin')->user()->user_type == 1 or Auth::Guard('admin')->user()->user_type == 2)
@@ -80,7 +72,7 @@ Message List
                                     @if ($row->status == 1)
                                     <span class="badge badge-success">Active</span>
                                     @else
-                                    <span class="badge badge-danger">Inactive</span>
+                                    <span class="badge badge-primary">Inactive</span>
                                     @endif
                                 </td>
                                 @endif
@@ -123,11 +115,10 @@ Message List
                             <tr>
                                 <th>Sl</th>
                                 <th>User</th>
-                                <th>Message</th>
-                                <th>Image One</th>
-                                <th>Image Two</th>
-                                <th>Image Three</th>
-                                <th>Message Status</th>
+                                <th>Subject</th>
+                                <th>Attachment Status</th>
+                                <th>Sent At</th>
+                                <th>Seen AT</th>
                                 @if (Auth::Guard('admin')->user()->user_type == 1 or Auth::Guard('admin')->user()->user_type == 2)
                                 <th>Status</th>
                                 @endif

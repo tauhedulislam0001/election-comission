@@ -65,6 +65,7 @@ class MessageController extends Controller
         }
 
         $request->validate([
+            'subject'     => 'required',
             'message'     => 'required',
             'image_one'   => 'mimes:jpeg,png,jpg,gif',
             'image_two'   => 'mimes:jpeg,png,jpg,gif',
@@ -94,6 +95,7 @@ class MessageController extends Controller
 
         $message             = new Message();
         $message->sender_id  = Auth::guard('admin')->user()->id;
+        $message->subject    = $request->subject;
         $message->message    = $request->message;
         $message->flag       = 0;
         $message->status     = 1;
@@ -207,6 +209,7 @@ class MessageController extends Controller
 
         $message->sender_id = Auth::guard('admin')->user()->id;
         $message->reply_id  = Auth::guard('admin')->user()->id;
+        $message->subject   = $request->subject;
         $message->message   = $request->message;
         $message->reply     = $request->reply;
         

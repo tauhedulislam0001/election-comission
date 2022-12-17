@@ -16,6 +16,7 @@ class CreateMessagesTable extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sender_id');
+            $table->text('subject');
             $table->text('message');
             $table->unsignedBigInteger('reply_id')->nullable();
             $table->text('reply')->nullable();

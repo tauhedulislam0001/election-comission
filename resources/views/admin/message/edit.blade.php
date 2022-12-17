@@ -20,6 +20,24 @@ Message View
         @csrf
         <div class="box-body">
             <div class="row">
+                <div class="col-md-12 col-12">
+                    <div class="box-header">
+                        <b>
+                            <h4 class="box-title text-info" style="margin: -20px;">Subject</h4>
+                        </b>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-xl-12">
+                    @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
+                        <textarea name="subject" class="form-control" id="message" cols="200" rows="1" required>{{ $item->subject }}</textarea>
+                    @else
+                        <textarea name="subject" class="form-control" id="message" cols="200" rows="1" readonly>{{ $item->subject }}</textarea>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6 col-6">
                     <div class="box-header">
                         <b>
@@ -38,83 +56,157 @@ Message View
                 </div>
             </div>
             <br>
-            <div class="row">
-                <div class="col-md-12 col-12">
-                    <div class="box-header">
-                        <b>
-                            <h4 class="box-title text-info" style="margin: -20px;">Upload Image</h4>
-                        </b>
+            @if($item->image_one != null or $item->image_two != null or $item->image_three != null) 
+                <div class="row">
+                    <div class="col-md-12 col-12">
+                        <div class="box-header">
+                            <b>
+                                <h4 class="box-title text-info" style="margin: -20px;">Uploaded Image</h4>
+                            </b>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <br>
-            <div class="row"`>
-                <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
-                    <div class="form-group">
-                        <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageOneDB">
-                            <img src="{{ asset($item->image_one ?? null) }}" height="250px" width="250px" alt="no record found!">
-                        </div>
-                        <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageOneRL">
-                            <img id="image_one" height="250px" width="250px"/>
-                        </div>
-                        <label>Image One</label> <br>
-                        @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
-                            <input type="file" name="image_one" id="image_one" class="form-control" onchange="imageOne(this);">
-                            <div class="error-message text-danger">
-                                @if ($errors->has('image_one'))
-                                <span class="alert alert-danger">
-                                    <strong>{{ $errors->first('image_one') }}</strong>
-                                </span>
+                <br>
+                <div class="row"`>
+                    @if (Auth::guard()->user()->id != $item->sender_id && $item->image_one != null)
+                        <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
+                            <div class="form-group">
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageOneDB">
+                                    <img src="{{ asset($item->image_one ?? null) }}" height="250px" width="250px" alt="no record found!">
+                                </div>
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageOneRL">
+                                    <img id="image_one" height="250px" width="250px"/>
+                                </div>
+                                <label>Image One</label> <br>
+                                @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
+                                    <input type="file" name="image_one" id="image_one" class="form-control" onchange="imageOne(this);">
+                                    <div class="error-message text-danger">
+                                        @if ($errors->has('image_one'))
+                                        <span class="alert alert-danger">
+                                            <strong>{{ $errors->first('image_one') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
                                 @endif
                             </div>
-                        @endif
-                    </div>
+                        </div>
+                    @else
+                        <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
+                            <div class="form-group">
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageOneDB">
+                                    <img src="{{ asset($item->image_one ?? null) }}" height="250px" width="250px" alt="no record found!">
+                                </div>
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageOneRL">
+                                    <img id="image_one" height="250px" width="250px"/>
+                                </div>
+                                <label>Image One</label> <br>
+                                @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
+                                    <input type="file" name="image_one" id="image_one" class="form-control" onchange="imageOne(this);">
+                                    <div class="error-message text-danger">
+                                        @if ($errors->has('image_one'))
+                                        <span class="alert alert-danger">
+                                            <strong>{{ $errors->first('image_one') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+                    @if (Auth::guard()->user()->id != $item->sender_id && $item->image_two != null)
+                        <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
+                            <div class="form-group">
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageTwoDB">
+                                    <img src="{{ asset($item->image_two ?? null) }}" height="250px" width="250px" alt="no record found!">
+                                </div>
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageTwoRL">
+                                    <img id="image_two" height="250px" width="250px"/>
+                                </div>
+                                <label>Image Two</label> <br>
+                                @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
+                                <input type="file" name="image_two" class="form-control" id="image_two" onchange="imageTwo(this);">
+                                <div class="error-message text-danger">
+                                    @if ($errors->has('image_two'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('image_two') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    @else
+                        <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
+                            <div class="form-group">
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageTwoDB">
+                                    <img src="{{ asset($item->image_two ?? null) }}" height="250px" width="250px" alt="no record found!">
+                                </div>
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageTwoRL">
+                                    <img id="image_two" height="250px" width="250px"/>
+                                </div>
+                                <label>Image Two</label> <br>
+                                @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
+                                <input type="file" name="image_two" class="form-control" id="image_two" onchange="imageTwo(this);">
+                                <div class="error-message text-danger">
+                                    @if ($errors->has('image_two'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('image_two') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+                    @if (Auth::guard()->user()->id != $item->sender_id && $item->image_three != null)
+                        <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
+                            <div class="form-group">
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageThreeDB">
+                                    <img src="{{ asset($item->image_three ?? null) }}" height="250px" width="250px" alt="no record found!">
+                                </div>
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageThreeRL">
+                                    <img id="image_three" height="250px" width="250px"/>
+                                </div>
+                                <label>Image Three</label> <br>
+                                @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
+                                <input type="file" name="image_three" class="form-control" id="image_three" onchange="imageThree(this);">
+                                <div class="error-message text-danger">
+                                    @if ($errors->has('image_three'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('image_three') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                                @endif
+                            </div>
+                        </div>                        
+                    @else
+                        <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
+                            <div class="form-group">
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageThreeDB">
+                                    <img src="{{ asset($item->image_three ?? null) }}" height="250px" width="250px" alt="no record found!">
+                                </div>
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageThreeRL">
+                                    <img id="image_three" height="250px" width="250px"/>
+                                </div>
+                                <label>Image Three</label> <br>
+                                @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
+                                <input type="file" name="image_three" class="form-control" id="image_three" onchange="imageThree(this);">
+                                <div class="error-message text-danger">
+                                    @if ($errors->has('image_three'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('image_three') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                                @endif
+                            </div>
+                        </div>                        
+                    @endif
                 </div>
-                <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
-                    <div class="form-group">
-                        <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageTwoDB">
-                            <img src="{{ asset($item->image_two ?? null) }}" height="250px" width="250px" alt="no record found!">
-                        </div>
-                        <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageTwoRL">
-                            <img id="image_two" height="250px" width="250px"/>
-                        </div>
-                        <label>Image Two</label> <br>
-                        @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
-                        <input type="file" name="image_two" class="form-control" id="image_two" onchange="imageTwo(this);">
-                        <div class="error-message text-danger">
-                            @if ($errors->has('image_two'))
-                            <span class="alert alert-danger">
-                                <strong>{{ $errors->first('image_two') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-                        @endif
-                    </div>
-                </div>
-                <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
-                    <div class="form-group">
-                        <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageThreeDB">
-                            <img src="{{ asset($item->image_three ?? null) }}" height="250px" width="250px" alt="no record found!">
-                        </div>
-                        <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageThreeRL">
-                            <img id="image_three" height="250px" width="250px"/>
-                        </div>
-                        <label>Image Three</label> <br>
-                        @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
-                        <input type="file" name="image_three" class="form-control" id="image_three" onchange="imageThree(this);">
-                        <div class="error-message text-danger">
-                            @if ($errors->has('image_three'))
-                            <span class="alert alert-danger">
-                                <strong>{{ $errors->first('image_three') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
+            @endif
             <br>
-            @if($item->sender_id == Auth::guard('admin')->user()->id && $item->reply_id != null)
+            @if($item->sender_id == Auth::guard('admin')->user()->id && $item->reply != null)
                 <div class="row">
                     <div class="col-md-6 col-6">
                         <div class="box-header">
@@ -167,6 +259,8 @@ Message View
                 <button type="button" class="btn btn-danger">Back</button>
             </a>
             @if(Auth::guard('admin')->user()->can('message.update') && $item->sender_id != Auth::guard('admin')->user()->id && $item->reply == null)
+                <button type="submit" class="btn btn-success">Send</button>
+            @elseif (Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
                 <button type="submit" class="btn btn-success">Send</button>
             @endif
         </div>
