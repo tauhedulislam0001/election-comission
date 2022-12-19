@@ -17,7 +17,14 @@ class AdminController extends Controller
 
     public function authenticate(Request $request)
     {
-        //  dd($request->all());
+        if (session()->has('success')) {
+            toast(Session('success'), 'success');
+        }
+
+        if (session()->has('error')) {
+            toast(Session('error'), 'error');
+        }
+        
         $credential = $request->only('email', 'password');
 
         if (Auth::guard('admin')->attempt($credential)) {
