@@ -30,14 +30,6 @@ class RolePermissionSeeder extends Seeder
                 ]
             ],
 
-            // visit_site permissions
-            [
-                'group_name' => 'visit_site',
-                'permissions' => [
-                    'visit_site.view',
-                ]
-            ],
-
             // permissions
             [
                 'group_name' => 'permission',
@@ -80,6 +72,20 @@ class RolePermissionSeeder extends Seeder
                     'user.view',
                     'user.edit',
                     'user.delete',
+                ]
+            ],
+
+            //all message permission
+            [
+                'group_name' => 'message',
+                'permissions' => [
+                    'message.view',
+                    'message.create',
+                    'message.store',
+                    'message.edit',
+                    'message.update',
+                    'message.delete',
+                    'message.status',
                 ]
             ],
         ];

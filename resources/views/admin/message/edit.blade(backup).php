@@ -70,28 +70,13 @@ Message View
                 <div class="row"`>
                     @if (Auth::guard()->user()->id != $item->sender_id && $item->image_one != null)
                         <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
-                            <div class="row fx-element-overlay">
-                                <div class="box box-default" style="height: 250px; width: 250px; margin: 0 0 21px 16px;">
-                                    <div class="fx-card-item">
-                                        <div class="fx-card-avatar fx-overlay-1">
-                                            <div class="show-image" id="imageOneDB">
-                                                <img src="{{ asset($item->image_one ?? null) }}" height="250px" width="250px" alt="no record found!">
-                                            </div>
-                                            <div class="fx-overlay">
-                                                <ul class="fx-info">
-                                                    <li>
-                                                        <a class="btn default btn-outline image-popup-vertical-fit"
-                                                            href="{{ asset($item->image_one ?? null) }}">
-                                                            <i class="ti-zoom-in"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="form-group">
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageOneDB">
+                                    <img src="{{ asset($item->image_one ?? null) }}" height="250px" width="250px" alt="no record found!">
+                                </div>
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageOneRL">
+                                    <img id="image_one" height="250px" width="250px"/>
+                                </div>
                                 <label>Image One</label> <br>
                                 @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
                                     <input type="file" name="image_one" id="image_one" class="form-control" onchange="imageOne(this);">
@@ -106,14 +91,12 @@ Message View
                             </div>
                         </div>
                     @else
-                        <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
+                        {{-- <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
                             <div class="row fx-element-overlay">
                                 <div class="box box-default" style="height: 250px; width: 250px; margin: 0 0 21px 16px;">
                                     <div class="fx-card-item">
                                         <div class="fx-card-avatar fx-overlay-1">
-                                            <div class="show-image" id="imageOneDB">
-                                                <img src="{{ asset($item->image_one ?? null) }}" height="250px" width="250px" alt="no record found!">
-                                            </div>
+                                            <img src="{{ asset($item->image_one ?? null) }}" height="250px" width="250px" alt="no record found!">
                                             <div class="fx-overlay">
                                                 <ul class="fx-info">
                                                     <li>
@@ -127,11 +110,18 @@ Message View
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
+                        <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
                             <div class="form-group">
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageOneDB">
+                                    <img src="{{ asset($item->image_one ?? null) }}" height="250px" width="250px" alt="no record found!">
+                                </div>
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageOneRL">
+                                    <img id="image_one" height="250px" width="250px"/>
+                                </div>
                                 <label>Image One</label> <br>
                                 @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
-                                    <input type="file" name="image_one" id="image_one" class="form-control">
+                                    <input type="file" name="image_one" id="image_one" class="form-control" onchange="imageOne(this);">
                                     <div class="error-message text-danger">
                                         @if ($errors->has('image_one'))
                                         <span class="alert alert-danger">
@@ -145,145 +135,93 @@ Message View
                     @endif
                     @if (Auth::guard()->user()->id != $item->sender_id && $item->image_two != null)
                         <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
-                            <div class="row fx-element-overlay">
-                                <div class="box box-default" style="height: 250px; width: 250px; margin: 0 0 21px 16px;">
-                                    <div class="fx-card-item">
-                                        <div class="fx-card-avatar fx-overlay-1">
-                                            <img src="{{ asset($item->image_two ?? null) }}" height="250px" width="250px" alt="no record found!">
-                                            <div class="fx-overlay">
-                                                <ul class="fx-info">
-                                                    <li>
-                                                        <a class="btn default btn-outline image-popup-vertical-fit"
-                                                            href="{{ asset($item->image_two ?? null) }}">
-                                                            <i class="ti-zoom-in"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="form-group">
-                                <label>Image One</label> <br>
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageTwoDB">
+                                    <img src="{{ asset($item->image_two ?? null) }}" height="250px" width="250px" alt="no record found!">
+                                </div>
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageTwoRL">
+                                    <img id="image_two" height="250px" width="250px"/>
+                                </div>
+                                <label>Image Two</label> <br>
                                 @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
-                                    <input type="file" name="image_two" id="image_two" class="form-control">
-                                    <div class="error-message text-danger">
-                                        @if ($errors->has('image_two'))
-                                        <span class="alert alert-danger">
-                                            <strong>{{ $errors->first('image_two') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
+                                <input type="file" name="image_two" class="form-control" id="image_two" onchange="imageTwo(this);">
+                                <div class="error-message text-danger">
+                                    @if ($errors->has('image_two'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('image_two') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
                                 @endif
                             </div>
                         </div>
                     @else
                         <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
-                            <div class="row fx-element-overlay">
-                                <div class="box box-default" style="height: 250px; width: 250px; margin: 0 0 21px 16px;">
-                                    <div class="fx-card-item">
-                                        <div class="fx-card-avatar fx-overlay-1">
-                                            <img src="{{ asset($item->image_two ?? null) }}" height="250px" width="250px" alt="no record found!">
-                                            <div class="fx-overlay">
-                                                <ul class="fx-info">
-                                                    <li>
-                                                        <a class="btn default btn-outline image-popup-vertical-fit"
-                                                            href="{{ asset($item->image_two ?? null) }}">
-                                                            <i class="ti-zoom-in"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="form-group">
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageTwoDB">
+                                    <img src="{{ asset($item->image_two ?? null) }}" height="250px" width="250px" alt="no record found!">
+                                </div>
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageTwoRL">
+                                    <img id="image_two" height="250px" width="250px"/>
+                                </div>
                                 <label>Image Two</label> <br>
                                 @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
-                                    <input type="file" name="image_two" id="image_two" class="form-control">
-                                    <div class="error-message text-danger">
-                                        @if ($errors->has('image_two'))
-                                        <span class="alert alert-danger">
-                                            <strong>{{ $errors->first('image_two') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
+                                <input type="file" name="image_two" class="form-control" id="image_two" onchange="imageTwo(this);">
+                                <div class="error-message text-danger">
+                                    @if ($errors->has('image_two'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('image_two') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
                                 @endif
                             </div>
                         </div>
                     @endif
                     @if (Auth::guard()->user()->id != $item->sender_id && $item->image_three != null)
                         <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
-                            <div class="row fx-element-overlay">
-                                <div class="box box-default" style="height: 250px; width: 250px; margin: 0 0 21px 16px;">
-                                    <div class="fx-card-item">
-                                        <div class="fx-card-avatar fx-overlay-1">
-                                            <img src="{{ asset($item->image_three ?? null) }}" height="250px" width="250px" alt="no record found!">
-                                            <div class="fx-overlay">
-                                                <ul class="fx-info">
-                                                    <li>
-                                                        <a class="btn default btn-outline image-popup-vertical-fit"
-                                                            href="{{ asset($item->image_three ?? null) }}">
-                                                            <i class="ti-zoom-in"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="form-group">
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageThreeDB">
+                                    <img src="{{ asset($item->image_three ?? null) }}" height="250px" width="250px" alt="no record found!">
+                                </div>
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageThreeRL">
+                                    <img id="image_three" height="250px" width="250px"/>
+                                </div>
                                 <label>Image Three</label> <br>
                                 @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
-                                    <input type="file" name="image_three" id="image_three" class="form-control">
-                                    <div class="error-message text-danger">
-                                        @if ($errors->has('image_three'))
-                                        <span class="alert alert-danger">
-                                            <strong>{{ $errors->first('image_three') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
+                                <input type="file" name="image_three" class="form-control" id="image_three" onchange="imageThree(this);">
+                                <div class="error-message text-danger">
+                                    @if ($errors->has('image_three'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('image_three') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
                                 @endif
                             </div>
-                        </div>                
+                        </div>                        
                     @else
                         <div class="col-4 col-sm-4 col-lg-4 col-xl-4 col-md-4">
-                            <div class="row fx-element-overlay">
-                                <div class="box box-default" style="height: 250px; width: 250px; margin: 0 0 21px 16px;">
-                                    <div class="fx-card-item">
-                                        <div class="fx-card-avatar fx-overlay-1">
-                                            <img src="{{ asset($item->image_three ?? null) }}" height="250px" width="250px" alt="no record found!">
-                                            <div class="fx-overlay">
-                                                <ul class="fx-info">
-                                                    <li>
-                                                        <a class="btn default btn-outline image-popup-vertical-fit"
-                                                            href="{{ asset($item->image_three ?? null) }}">
-                                                            <i class="ti-zoom-in"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="form-group">
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageThreeDB">
+                                    <img src="{{ asset($item->image_three ?? null) }}" height="250px" width="250px" alt="no record found!">
+                                </div>
+                                <div class="show-image" style="margin: 0px 0px 20px 0px; height: 250px; width: 250px" id="imageThreeRL">
+                                    <img id="image_three" height="250px" width="250px"/>
+                                </div>
                                 <label>Image Three</label> <br>
                                 @if(Auth::guard('admin')->user()->id == $item->sender_id && $item->flag == 0)
-                                    <input type="file" name="image_three" id="image_three" class="form-control">
-                                    <div class="error-message text-danger">
-                                        @if ($errors->has('image_three'))
-                                        <span class="alert alert-danger">
-                                            <strong>{{ $errors->first('image_three') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
+                                <input type="file" name="image_three" class="form-control" id="image_three" onchange="imageThree(this);">
+                                <div class="error-message text-danger">
+                                    @if ($errors->has('image_three'))
+                                    <span class="alert alert-danger">
+                                        <strong>{{ $errors->first('image_three') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
                                 @endif
                             </div>
-                        </div>                  
+                        </div>                        
                     @endif
                 </div>
             @endif
@@ -293,7 +231,7 @@ Message View
                     <div class="col-md-6 col-6">
                         <div class="box-header">
                             <b>
-                                <h4 class="box-title text-info" style="margin: -20px;">You Replied</h4>
+                                <h4 class="box-title text-info" style="margin: -20px;">Reply</h4>
                             </b>
                         </div>
                     </div>
@@ -308,7 +246,7 @@ Message View
                     <div class="col-md-6 col-6">
                         <div class="box-header">
                             <b>
-                                <h4 class="box-title text-info" style="margin: -20px;">{{$item->repliedUser->username}} Replied</h4>
+                                <h4 class="box-title text-info" style="margin: -20px;">Reply</h4>
                             </b>
                         </div>
                     </div>
@@ -351,4 +289,67 @@ Message View
 @endsection
 
 @section('script')
+
+<script>
+$("#imageOneDB").show();
+$("#imageOneRL").hide();
+$("#imageTwoDB").show();
+$("#imageTwoRL").hide();
+$("#imageThreeDB").show();
+$("#imageThreeRL").hide();
+
+
+function imageOne(input, id) {
+    $("#imageOneDB").hide();
+    id = id || '#image_one';
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        $("#imageOneRL").show();
+        
+        reader.onload = function (e) {
+            $(id)
+            .attr('src', e.target.result)
+            .width(250)
+            .height(250);
+        };
+ 
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function imageTwo(input, id) {
+    $("#imageTwoDB").hide();
+    id = id || '#image_two';
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        $("#imageTwoRL").show();
+        reader.onload = function (e) {
+            $(id)
+            .attr('src', e.target.result)
+            .width(250)
+            .height(250);
+        };
+ 
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function imageThree(input, id) {
+    $("#imageThreeDB").hide();
+    id = id || '#image_three';
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        $("#imageThreeRL").show();
+        reader.onload = function (e) {
+            $(id)
+            .attr('src', e.target.result)
+            .width(250)
+            .height(250);
+        };
+ 
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
+
 @endsection

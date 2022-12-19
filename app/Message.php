@@ -35,4 +35,9 @@ class Message extends Model
     {
         return $this->belongsTo(AdminUser::class, 'sender_id');
     }
+
+    public function repliedUser()
+    {
+        return $this->belongsTo(AdminUser::class, 'reply_id');
+    }
 }
